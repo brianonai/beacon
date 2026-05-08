@@ -24,9 +24,15 @@ class Settings(BaseSettings):
     inspect_concurrency: int = 10
     inspect_jitter_ms: int = 100
     stale_days: int = 180
+    page_check_concurrency: int = 5
+    user_agent: str = "BeaconBot/0.1 (+https://github.com/brianonai/beacon)"
+    max_redirects: int = 5
 
     # Rate sanity caps (V1: no hard cap, just warning above this)
     soft_url_warn: int = 5000
+
+    # Optional anonymous install ping (off by default; endpoint not required for core app).
+    beacon_telemetry: bool = False
 
     # Microlink.io (optional `x-api-key` for Pro / higher limits).
     microlink_api_key: str = ""

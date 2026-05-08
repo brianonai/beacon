@@ -1,6 +1,7 @@
 # env
 .env
 .env.local
+*.env.backup
 
 # python
 __pycache__/

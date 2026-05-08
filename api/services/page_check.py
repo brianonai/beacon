@@ -14,8 +14,8 @@ from typing import Any, AsyncIterator
 
 import httpx
 
-USER_AGENT = "BeaconBot/0.1 (+https://github.com/brianonai/beacon)"
-MAX_REDIRECTS = 5
+from ..settings import get_settings
+
 HTTP_TIMEOUT = 10.0
 
 
@@ -58,20 +58,22 @@ async def check_one(
 
 async def check_stream(
     urls: list[str],
-    concurrency: int = 5,
+    concurrency: int | None = None,
 ) -> AsyncIterator[dict[str, Any]]:
     """Yield {url, page_check, completed, total} for each URL as it finishes."""
-    sem = asyncio.Semaphore(concurrency)
-    headers = {"User-Agent": USER_AGENT}
+    settings = get_settings()
+    conc = concurrency if concurrency is not None else settings.page_check_concurrency
+    sem = asyncio.Semaphore(conc)
+    headers = {"User-Agent": settings.user_agent}
     total = len(urls)
 
-    limits = httpx.Limits(max_keepalive_connections=20, max_connections=concurrency + 5)
+    limits = httpx.Limits(max_keepalive_connections=20, max_connections=conc + 5)
     async with httpx.AsyncClient(
         headers=headers,
         follow_redirects=True,
         timeout=HTTP_TIMEOUT,
         limits=limits,
-        max_redirects=MAX_REDIRECTS,
+        max_redirects=settings.max_redirects,
       ) as client:
         tasks = [asyncio.create_task(_wrap(sem, client, u)) for u in urls]
         completed = 0

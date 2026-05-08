@@ -220,7 +220,12 @@ export default function Home() {
 
       <footer className="relative mx-auto max-w-5xl px-6 py-12 text-xs font-mono text-smoke text-center">
         Built by Brian Diamond · BYO credentials · Open source ·{" "}
-        <a href="https://github.com" className="text-ash hover:text-bone">GitHub</a>
+        <a
+          href="https://github.com/brianonai/beacon"
+          className="text-ash hover:text-bone"
+        >
+          GitHub
+        </a>
       </footer>
     </main>
   );

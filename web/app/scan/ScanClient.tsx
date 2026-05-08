@@ -319,6 +319,24 @@ export function ScanClient() {
         )}
 
         <ResultsTable rows={rows} />
+
+        {scanDone && summary && (
+          <div className="mt-8 rounded-lg border border-rule bg-coal p-5">
+            <div className="mb-2 text-sm font-medium text-beam">Want this scheduled?</div>
+            <p className="mb-3 text-sm text-ash">
+              Beacon Cloud (in development) runs scans weekly, alerts you when index status changes,
+              and tracks history per-property. Join the waitlist — no commitment, no spam.
+            </p>
+            <a
+              href="https://brianonai.substack.com/p/beacon-cloud-get-notified-when-its"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center text-sm text-beam hover:text-beam2"
+            >
+              Join the waitlist →
+            </a>
+          </div>
+        )}
       </section>
     </main>
   );

@@ -70,7 +70,7 @@ async def post_scan(req: ScanRequest, request: Request) -> StreamingResponse:
 
         if urls:
             yield _sse("page_check_started", {"total": len(urls)})
-            async for pc_evt in page_check_stream(urls, concurrency=5):
+            async for pc_evt in page_check_stream(urls):
                 url = pc_evt["url"]
                 check = pc_evt["page_check"]
                 for r in collected:
