@@ -2,8 +2,6 @@
   <img src="docs/assets/beacon-logo.png" alt="Beacon" width="120">
 </p>
 
-<h1 align="center">Beacon</h1>
-
 <p align="center">
   <strong>See what Google sees.</strong><br>
   Self-hosted indexing diagnostics for your sitemap, in one <code>docker compose up</code>.
