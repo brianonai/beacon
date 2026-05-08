@@ -9,6 +9,10 @@ We follow HTTP redirects locally first (HEAD, then GET if needed) so apex
 domains that 301 to www (e.g. plotluck.app → www.plotluck.app) match what
 works when you curl the final URL.
 
+For bare origins (scheme + host + ``/`` only, default port), we probe **apex
+first**, then ``https://www.{host}/`` if the first request never connects
+(subdomains often have no ``www`` DNS; some apex-only sites are the reverse).
+
 Matches Microlink’s documented usage: GET with `url` and `screenshot=true`.
 If that returns an error, we retry with `url` only (metadata + OG image).
 
@@ -18,7 +22,7 @@ from __future__ import annotations
 
 import json
 from typing import Any, Optional
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlparse, urlunparse
 
 import httpx
 from pydantic import BaseModel, Field
@@ -69,6 +73,39 @@ def _normalize_input_url(url: str) -> str:
     if "://" not in u:
         u = f"https://{u}"
     return u
+
+
+def _origin_probe_urls(requested_url: str) -> list[str]:
+    """URLs to try for a site root: given host first, then www variant if applicable."""
+    p = urlparse(requested_url)
+    host = (p.hostname or "").rstrip(".")
+    if not host:
+        return [requested_url]
+    scheme = p.scheme or "https"
+    path = p.path or ""
+    if path not in ("", "/") or p.query or p.fragment:
+        return [requested_url]
+    if p.port is not None:
+        return [requested_url]
+    if host.lower().startswith("www."):
+        return [urlunparse((scheme, host, "/", "", "", ""))]
+    return [
+        urlunparse((scheme, host, "/", "", "", "")),
+        urlunparse((scheme, f"www.{host}", "/", "", "", "")),
+    ]
+
+
+async def _resolve_final_url_candidates(urls: list[str]) -> tuple[str, Optional[str]]:
+    """Try each URL until one connects; return (final_url_after_redirects, error_note_if_all_failed)."""
+    last_note: Optional[str] = None
+    last_resolved = urls[0] if urls else ""
+    for u in urls:
+        resolved, note = await _resolve_final_url(u)
+        last_resolved = resolved
+        if note is None:
+            return resolved, None
+        last_note = note
+    return last_resolved, last_note
 
 
 async def _resolve_final_url(url: str) -> tuple[str, Optional[str]]:
@@ -159,7 +196,9 @@ async def fetch_preview(url: str) -> SitePreview:
     if not requested_url:
         return SitePreview(error="Empty URL")
 
-    resolved_url, resolve_note = await _resolve_final_url(requested_url)
+    resolved_url, resolve_note = await _resolve_final_url_candidates(
+        _origin_probe_urls(requested_url)
+    )
     microlink_target = resolved_url
 
     last_error: Optional[SitePreview] = None
