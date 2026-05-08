@@ -347,7 +347,7 @@ Beacon is built and maintained by [Brian Diamond](https://brianonai.com).
 **If you find it useful:**
 
 - 📬 **[The CAIO Brief](https://thecaiobrief.substack.com)** — AI governance & technical diligence
-- 🔗 **[LinkedIn](https://linkedin.com/in/brianpdiamond)**
+- 🔗 **[LinkedIn](https://www.linkedin.com/in/brianonai/)**
 - 🛠️ **[Contact](https://brianonai.com/contact)** — fractional CAIO, governance, indexing at scale
 - ⭐ **Star the repo** on GitHub
 
