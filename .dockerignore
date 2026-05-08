@@ -1,0 +1,33 @@
+# VCS
+.git
+.gitignore
+.gitattributes
+
+# Env files (never bake into images)
+.env
+.env.*
+!.env.example
+
+# Node
+**/node_modules
+**/.next
+**/out
+**/dist
+**/.turbo
+
+# Python
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.venv
+**/venv
+
+# Editor / OS
+.vscode
+.idea
+.DS_Store
+Thumbs.db
+
+# Logs / scratch
+*.log
+*.tmp
