@@ -87,6 +87,29 @@ Beacon does one thing: shows you the delta between your sitemap and Google's ind
 
 ---
 
+## New to Docker?
+
+Docker is a way to run software in isolated containers - meaning Beacon can run on your machine without you having to install Python, Node.js, or any other dependencies. Everything Beacon needs is bundled and runs in its own sandbox.
+
+You install Docker once. After that, Beacon (and any other Docker-based tool) just works.
+
+**Install Docker for your OS:**
+- [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/)
+- [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/)
+- [Docker Engine for Linux](https://docs.docker.com/engine/install/)
+
+Docker Desktop is free for personal use and most small businesses. After installing, open the Docker Desktop app once to make sure it's running. You'll see a whale icon in your menu bar (Mac) or system tray (Windows) when it's active.
+
+**Verify Docker is installed:**
+```bash
+docker --version
+docker compose version
+```
+
+If both commands return version numbers, you're ready to install Beacon.
+
+---
+
 ## Quick Start
 
 You need Docker, a Google account, and ~10 minutes for first-time setup. Once configured, scans take 30–120 seconds for typical sites.
