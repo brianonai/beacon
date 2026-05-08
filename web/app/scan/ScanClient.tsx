@@ -141,7 +141,8 @@ export function ScanClient() {
     let previewUrl = property;
     if (property.startsWith("sc-domain:")) {
       const host = property.slice("sc-domain:".length).trim().replace(/^\/+/, "");
-      previewUrl = host ? `https://www.${host}/` : property;
+      // API probes this root then https://www.{host}/ if the first request cannot connect.
+      previewUrl = host ? `https://${host}/` : property;
     }
     setPreviewLoading(true);
     let cancelled = false;
